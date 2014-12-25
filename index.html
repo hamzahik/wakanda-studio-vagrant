@@ -1,0 +1,57 @@
+<html>
+	<head>
+		<title>
+			Get Wakanda
+		</title>
+	</head>
+	<style>
+		.tp{
+			position:absolute;
+			top:0px;
+			height:50px;	
+			width:100%;
+		}
+		.bottom{
+			position:absolute;
+			top:50px;
+			height:100px;		
+			width:100%;
+		}
+		textarea{
+			position:absolute;
+			top:200px;
+			bottom:0px;
+			width:100%;
+		}
+	</style>
+	<body>
+		<div class="top">
+			<h1>Test On Linux Locally</h1>
+		</div>
+		<div class="bottom">
+			<p>
+				<select name="distro" id="distro">
+					<option>Linux Distribution</option>
+					<option value="ubuntu/trusty64">Ubuntu Trusty64 (14.04 LTS 64-bit)</option>
+					<option value="hashicorp/precise64">Ubuntu Precise64 (12.04 LTS 64-bit)</option>
+					<option value="hashicorp/precise32">Ubuntu Precise32 (12.04 LTS 32-bit)</option>
+				</select>
+			</p>
+			<p id="wakanda">
+				<select id="value" class="next">
+					<option>Wakanda Branch</option>
+					<option value="Production">Production</option>
+					<option value="Stabilization">Stabilization</option>
+					<option value="Dev">Development</option>
+				</select>
+			</p>
+			<button id="reset" onclick="javascript:window.location.reload();">Reset</button>
+			<button id="submit">Next</button>
+			<button id="init">Init</button>
+			<button id="up">Up</button>
+			<br><br>			
+		</div>
+		<textarea id="output"></textarea>
+	</body>
+	<script src="./vagrant.js"></script>
+</html>

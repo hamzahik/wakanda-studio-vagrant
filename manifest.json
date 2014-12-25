@@ -1,0 +1,28 @@
+{
+	"extension": 
+	{
+		"name": "vagrant",
+		"version": "1.0.0",
+		"description": "Wakanda Studio Vagrant Extension",
+		"icon": "vagrant.png",
+		
+		"senders": [
+			{
+				"location": "studioToolbar", 
+				"tips": "",
+				"icon": "vagrant.png",
+				"title": "Vagrant",
+				"actionName": "openUI"
+			}
+		],
+		
+		"actions": [
+			{
+				"name": "openUI",
+				"title": "openUI"
+			}
+		],
+
+		"lifetime": "application_lifetime"
+	}
+}
