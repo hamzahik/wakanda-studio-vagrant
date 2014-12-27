@@ -5,7 +5,7 @@
 		</title>
 	</head>
 	<style>
-		.tp{
+		.top{
 			position:absolute;
 			top:0px;
 			height:50px;	
@@ -19,7 +19,7 @@
 		}
 		textarea{
 			position:absolute;
-			top:200px;
+			top:230px;
 			bottom:0px;
 			width:100%;
 		}
@@ -44,6 +44,9 @@
 					<option value="Stabilization">Stabilization</option>
 					<option value="Dev">Development</option>
 				</select>
+			</p>
+			<p>
+				<input id="ports" type="text" value="8080,4433,8081"/>
 			</p>
 			<button id="reset" onclick="javascript:window.location.reload();">Reset</button>
 			<button id="submit">Next</button>

@@ -20,7 +20,12 @@ exports.handleMessage = function handleMessage(message)
 				var message = evt.data;
 				
 				if ( message.type == 'connected' ) {
-				
+					
+					
+					var solFile			= studio.currentSolution.getSolutionFile();
+					var parentFolder	= solFile.parent.parent;
+					var relSolFilePath	= solFile.path.replace( parentFolder.path , '' );
+
 					port.postMessage({
 						type: 'init',
 						data: {
@@ -29,7 +34,13 @@ exports.handleMessage = function handleMessage(message)
 						
 							folder		: studio.currentSolution.getSolutionFile().parent.parent.path,
 							
-							vm			: studio.extension.storage.getItem( 'vm' ) 
+							vm			: studio.extension.storage.getItem( 'vm' ),
+							
+							url			: studio.extension.storage.getItem( 'url' ),
+							
+							relSolPath	: relSolFilePath,
+							
+							ports		: JSON.parse( studio.extension.storage.getItem( 'ports' ) )
 						
 						}
 					});
@@ -40,7 +51,7 @@ exports.handleMessage = function handleMessage(message)
 				
 			};
 			
-			wait(5000);		
+			wait(5000);
 			
 			break;
 			
@@ -81,11 +92,11 @@ exports.handleMessage = function handleMessage(message)
 			
 			port.onmessage = function (evt) {
 				var message = evt.data;
-				
+				//studio.alert(JSON.stringify(message));
 				switch ( message.type ) {
 				
 					case 'connected':
-				
+						
 						port.postMessage({
 							type: 'output',
 							
@@ -97,7 +108,7 @@ exports.handleMessage = function handleMessage(message)
 						break;
 						
 					case 'output':
-						//studio.alert(JSON.stringify(message.last));
+						
 						studio.extension.storage.setItem( 'last' , message.last );
 						studio.extension.storage.setItem( 'test' , message.data );
 						studio.extension.storage.setItem( 'done' , message.done );
@@ -111,7 +122,7 @@ exports.handleMessage = function handleMessage(message)
 			};
 			
 			wait(1000);		
-			
+			//studio.alert('waited');
 			break;
 	}
 }

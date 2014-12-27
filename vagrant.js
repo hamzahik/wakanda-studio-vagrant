@@ -1,8 +1,10 @@
-var pWakanda 	= document.getElementById('wakanda');
-var submit		= document.getElementById('submit');
-var distro		= document.getElementById('distro');
-var url			= '';
-var separator	= '\n***************';
+var pWakanda 		= document.getElementById('wakanda');
+var submit			= document.getElementById('submit');
+var distro			= document.getElementById('distro');
+var ports			= document.getElementById('ports');
+var url				= '';
+var separator		= '\n***************';
+var wakandaLinks	= false;
 
 var branches	= {
 
@@ -25,11 +27,12 @@ up.onclick = function(){
 	
 		studio.sendCommand( 'vagrant.worker_output' );
 		
-		var output	= studio.extension.storage.getItem( 'test' );
+		var output		= studio.extension.storage.getItem( 'test' );
+		var textarea	= document.getElementById('output');
 		
 		if ( output ) {
 		
-			document.getElementById('output').value += output;
+			textarea.value += output;
 		
 		}
 		
@@ -39,9 +42,11 @@ up.onclick = function(){
 		
 		} else if( studio.extension.storage.getItem( 'done' ) == true ) {
 		
-			document.getElementById('output').value += separator;
+			textarea.value += separator;
 		
 		}
+		
+		textarea.scrollTop = textarea.scrollHeight;
 	
 	};
 	
@@ -52,34 +57,12 @@ up.onclick = function(){
 init.onclick = function(){
 	
 	studio.extension.storage.setItem( 'vm' , distro.value );
+	studio.extension.storage.setItem( 'url' , url );
+	studio.extension.storage.setItem( 'ports' , '[' + ports.value + ']' );
 	
 	studio.sendCommand('vagrant.init');
-	
-	function check(){
-	
-		studio.sendCommand( 'vagrant.worker_output' );
-		
-		var output	= studio.extension.storage.getItem( 'test' );
-		
-		if ( output ) {
-		
-			document.getElementById('output').value += output;
-		
-		}
-		
-		if ( ! studio.extension.storage.getItem( 'done' ) ) {
-		
-			setTimeout( check , 500 );
-		
-		} else if( studio.extension.storage.getItem( 'done' ) == true ) {
-		
-			document.getElementById('output').value += separator;
-		
-		}
-	
-	};
-	
-	check();
+
+	document.getElementById('output').value += separator;
 
 };
 
@@ -101,12 +84,15 @@ submit.onclick = function(){
 		
 		}
 		
-		var result = getLink( url );
+		if ( !wakandaLinks ) {
 		
-		if ( result !== false ) {
-		
-			console.log( result );
+			getLink( url );
 			
+		} else {
+		
+			document.getElementById('output').value += '\n' + url;
+			document.getElementById('output').value += separator;
+		
 		}
 	
 	}
@@ -119,7 +105,9 @@ function getLink( url ) {
 	
 	if ( result.folders.length == 0 ) {
 	
-		return result.files;
+		createSelect( result.files );
+		
+		wakandaLinks	= true;
 	
 	} else {
 	

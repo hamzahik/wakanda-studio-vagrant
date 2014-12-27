@@ -21,11 +21,23 @@ onconnect = function(msg) {
 				
 				var vagrant	= loadText( data.extension + 'Vagrantfile' );
 				var init	= loadText( data.extension + 'init.sh' );
+				var strPort	= '  config.vm.network "forwarded_port", guest: {{PORT}}, host: {{PORT}}';
+				var ports	= '';
+				
+				for ( var i in data.ports ) {
+				
+					ports	+= strPort.replace( /{{PORT}}/g , data.ports[i]) + '\n';
+				
+				};
+				
+				vagrant	= vagrant.replace( '{{PORTS}}' , ports );
 				
 				vagrant	= vagrant.replace( '{{BOX}}' , data.vm );
 				
 				saveText( vagrant , data.folder + 'Vagrantfile' );
 				saveText( init , data.folder + 'init.sh' );
+				saveText( data.url , data.folder + 'url' );
+				saveText( data.relSolPath , data.folder + 'path' );
 				
 				break;
 				
@@ -38,7 +50,7 @@ onconnect = function(msg) {
 				break;
 				
 			case 'output':
-			
+
 				port.postMessage({
 				
 					type : 'output',
@@ -79,9 +91,9 @@ function run( cmd , path ) {
 		return false;
 	
 	}
-
+	
 	sysW		= new SystemWorker ( cmd , path );
-				
+	
 	sysW.setBinary( true );
 	
 	response	= '';
@@ -89,13 +101,13 @@ function run( cmd , path ) {
 	
 	sysW.onmessage = function ( e )
 	{	
-	
+		
 		var result = e.data.toString();
 		
 		arr.push( result );
 		
 		response 	+= result;
-
+		
 	}
 	
 	sysW.onerror = function ( e )
